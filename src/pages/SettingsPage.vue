@@ -149,7 +149,7 @@ const resetSettings = () => {
   chaptersPerDay.value = store.settings.BibleChaptersPerDay
 
   Notify.create({
-    message: 'Settings reset to default <br> Reading plan regenerated. 📖 Starting date: Sun. 9th Feb. 2025, 4 chapters a day',
+    message: 'Settings reset to default. <br> Reading plan regenerated. 📖 <br> Starting date: Sun. 9th Feb. 2025, 4 chapters a day.',
     color: 'primary',
     position: 'top',
     type: 'positive',
