@@ -1,4 +1,5 @@
 <template>
+  <!-- lHh lpr lFf -->
   <q-layout view="lHh Lpr lFf" class="tw:bg-slate-200">
     <q-header elevated>
       <q-toolbar class="tw:bg-red-800">
@@ -29,24 +30,37 @@
       </q-list>
     </q-drawer>
 
-    <q-page-container>
-      <q-page class="tw:sm:w-100 tw:w-full tw:mx-auto">
-        <router-view/>
+    <div class="tw:sm:hidden tw:block q-gutter-y-md tw:absolute tw:bottom-0 tw:w-full">
+      <q-footer elevated>
+        <q-tabs v-model="tab" class="tw:bg-red-800 text-white text-dark shadow-2 tw:w-full">
+          <q-tab
+            no-caps=""
+            name="chaptersToday"
+            label="Today"
+            icon="home"
+            @click="goto('chaptersToday')"
+          />
+          <q-tab
+            name="chaptersIndex"
+            label="All Chapters"
+            icon="format_list_bulleted"
+            @click="goto('chaptersIndex')"
+            no-caps=""
+          />
+          <q-tab
+            no-caps=""
+            name="settings"
+            label="Settings"
+            icon="settings"
+            @click="goto('settings')"
+          />
+        </q-tabs>
+      </q-footer>
+    </div>
 
-        <!-- Bottom Navigation -->
-        <div class="tw:sm:hidden tw:block q-gutter-y-md tw:absolute tw:bottom-0 tw:w-full">
-          <q-tabs v-model="tab" class="bg-yellow text-dark shadow-2">
-            <q-tab no-caps="" name="chaptersToday" label="Today" icon="home" @click="goto('chaptersToday')" />
-            <q-tab
-              name="chaptersIndex"
-              label="All Chapters"
-              icon="format_list_bulleted"
-              @click="goto('chaptersIndex')"
-              no-caps=""
-            />
-            <q-tab no-caps="" name="settings" label="Settings" icon="settings" @click="goto('settings')" />
-          </q-tabs>
-        </div>
+    <q-page-container>
+      <q-page class="tw:sm:w-100 tw:mx-auto">
+        <router-view />
       </q-page>
     </q-page-container>
   </q-layout>
