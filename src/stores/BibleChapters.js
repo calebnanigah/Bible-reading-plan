@@ -5,8 +5,8 @@ export const useStorageStore = defineStore('BibleChapters', {
   state: () => ({
     settings: {
       BibleChaptersPerDay: 4,
-      readingStartDate: '01-01-2025',
-      readingEndDate: '01-01-2025',
+      readingStartDate: '2025-01-01',
+      readingEndDate: '2025-11-01',
       readingPlan: 'Chronological',
       readingProgress: 0,
     },
@@ -1206,13 +1206,21 @@ export const useStorageStore = defineStore('BibleChapters', {
   }),
 
   getters: {
+    /**
+     * Get chapters for today
+     * @returns {Array} - List of chapters assigned for today
+     */
     getChaptersForToday(state) {
-      const today = date.formatDate(new Date(), 'DD-MM-YYYY')
-      return state.arrangedChapters.find((entry) => entry.date === today)?.chapters || []
+      const today = date.formatDate(new Date(), 'YYYY-MM-DD')
+      const entry = state.arrangedChapters.find((entry) => entry.date === today)
+      return entry ? entry.chapters : []
     },
   },
 
   actions: {
+    /**
+     * Load settings from LocalStorage
+     */
     loadSettings() {
       const storedSettings = LocalStorage.getItem('BibleChaptersSettings')
       if (storedSettings) {
@@ -1220,19 +1228,25 @@ export const useStorageStore = defineStore('BibleChapters', {
       }
     },
 
+    /**
+     * Save settings to LocalStorage
+     */
     saveSettings() {
       LocalStorage.set('BibleChaptersSettings', this.settings)
     },
 
+    /**
+     * Generate the reading plan based on the start date and chapters per day
+     */
     generateReadingPlan() {
       const { BibleChapters, settings } = this
       const { readingStartDate, BibleChaptersPerDay } = settings
 
-      let startDate = date.extractDate(readingStartDate, 'DD-MM-YYYY')
+      let startDate = date.extractDate(readingStartDate, 'YYYY-MM-DD')
       this.arrangedChapters = []
 
       for (let i = 0; i < BibleChapters.length; i += BibleChaptersPerDay) {
-        const readingDay = date.formatDate(startDate, 'DD-MM-YYYY')
+        const readingDay = date.formatDate(startDate, 'YYYY-MM-DD')
         this.arrangedChapters.push({
           date: readingDay,
           chapters: BibleChapters.slice(i, i + BibleChaptersPerDay),
@@ -1243,15 +1257,26 @@ export const useStorageStore = defineStore('BibleChapters', {
       LocalStorage.set('BibleReadingPlan', this.arrangedChapters)
     },
 
+    /**
+     * Load the reading plan from LocalStorage or generate a new one if not found
+     */
     loadReadingPlan() {
       const storedPlan = LocalStorage.getItem('BibleReadingPlan')
       if (storedPlan) {
         this.arrangedChapters = storedPlan
+      } else {
+        this.generateReadingPlan() // Generate if no saved plan
       }
     },
 
-    getChaptersForDate(targetDate) {
-      return this.arrangedChapters.find((entry) => entry.date === targetDate)?.chapters || []
+    /**
+     * Get the chapters assigned for today (called from actions instead of getter)
+     * @returns {Array} - Today's chapters
+     */
+    getChapterForToday() {
+      const today = date.formatDate(new Date(), 'YYYY-MM-DD')
+      const entry = this.arrangedChapters.find((entry) => entry.date === today)
+      return entry ? entry.chapters : []
     },
   },
 })
