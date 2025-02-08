@@ -6,7 +6,7 @@ export const useStorageStore = defineStore('BibleChapters', {
     settings: {
       BibleChaptersPerDay: 4,
       readingStartDate: '2025-02-09',
-      readingEndDate: '2025-02-09',
+      readingEndDate: '2025-11-09',
       readingPlan: 'Chronological',
       readingProgress: 0,
     },

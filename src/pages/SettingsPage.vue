@@ -67,6 +67,13 @@
     <h2 class="tw:text-base!">📖 Daily Bible Verse (NKJV)</h2>
     <div id="dailyVersesWrapper"></div>
   </div>
+
+  <q-separator />
+  <p class="tw:text-sm! tw:font-normal! tw:p-2! tw:text-slate-700 tw:text-center">
+    Contact developer:
+    <a href="mailto:calebna4@gmail.com"
+      >calebna4@gmail.com</a>
+  </p>
 </template>
 
 <script setup>
