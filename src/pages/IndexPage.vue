@@ -19,13 +19,13 @@
     </p>
   </div>
 
-  <div class="tw:bg-white tw:rounded-lg tw:shadow-lg tw:m-4 tw:p-2 tw:flex tw:items-center tw:justify-center tw:gap-2">
+  <div
+    class="tw:bg-white tw:rounded-lg tw:shadow-lg tw:m-4 tw:p-2 tw:flex tw:items-center tw:justify-center tw:gap-2"
+  >
     <q-icon name="info" color="blue-8" size="2rem" />
     <div>
       <p class="tw:text-base! tw:m-0! tw:font-semibold!">Bible Reading Plan: 4 chapters a day</p>
-    <p class="tw-text-sm tw:m-0!">
-      Tap on the WhatsApp button to share with friends.
-    </p>
+      <p class="tw-text-sm tw:m-0!">Tap on the WhatsApp button to share with friends.</p>
     </div>
   </div>
 
@@ -81,14 +81,12 @@ watch(
 //   window.open(whatsappURL, "_blank");
 // }
 
-
 const shareOnWhatsApp = (todaysDate, chapters, finishingDate) => {
   // console.log(todaysDate, chapters, finishingDate);
 
-   let formattedChapters = chapters.map(chapter => `📖 ${chapter}`).join("\n");
+  let formattedChapters = chapters.map((chapter) => `📖 ${chapter}`).join('\n')
 
-let msgTxt =
-`*${todaysDate}*
+  let msgTxt = `*${todaysDate}*
 
 _Youth!_
 _Arise and shine...!_
@@ -103,13 +101,13 @@ Have a blessed day. 🙏🏽❤️
 🔗 _Reading Plan: https://biblereadingplan.netlify.app_
 🗓️ _Completion date: ${finishingDate}._`
 
-  let WhatsAppText = `https://api.whatsapp.com/send?text=${encodeURIComponent(msgTxt)}`;
+  let WhatsAppText = `https://api.whatsapp.com/send?text=${encodeURIComponent(msgTxt)}`
 
   //   const message = formatAttendeesData(attendees);
   // const whatsappURL = `https://wa.me/?text=${message}`;
 
-    window.open(WhatsAppText, "_blank");
+  window.open(WhatsAppText, '_blank')
 
-    // return WhatsAppText;
+  // return WhatsAppText;
 }
 </script>

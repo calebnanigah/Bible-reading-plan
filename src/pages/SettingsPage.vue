@@ -2,9 +2,11 @@
   <h1 class="tw:text-3xl! tw:font-normal! tw:p-2!">Settings</h1>
   <q-separator />
 
-  <form class="tw:bg-white tw:shadow-2xs tw:rounded-lg tw:py-4 tw:px-2 tw:my-4" @submit.prevent="saveSettings">
+  <form
+    class="tw:bg-white tw:shadow-2xs tw:rounded-lg tw:py-4 tw:px-2 tw:my-4"
+    @submit.prevent="saveSettings"
+  >
     <div class="tw:grid tw:grid-cols-1 tw:gap-4 tw:py-4 tw:w-9/10! tw:mx-auto!">
-
       <q-input
         outlined
         v-model="chaptersPerDay"
@@ -52,11 +54,18 @@
     </div>
   </form>
 
-    <div class="tw:bg-red-200 tw:rounded-lg tw:shadow-lg tw:m-4 tw:p-2 tw:flex tw:items-center tw:justify-center tw:gap-2">
+  <div
+    class="tw:bg-red-200 tw:rounded-lg tw:shadow-lg tw:m-4 tw:p-2 tw:flex tw:items-center tw:justify-center tw:gap-2"
+  >
     <q-icon name="info" color="red-8" size="2rem" />
     <div>
       <p class="tw:text-base! tw:m-0!">Settings cannot be saved yet.</p>
     </div>
+  </div>
+
+  <div class="tw:bg-white tw:rounded-lg tw:shadow-lg tw:m-4 tw:p-2">
+    <h2 class="tw:text-base!">📖 Daily Bible Verse (NKJV)</h2>
+    <div id="dailyVersesWrapper"></div>
   </div>
 </template>
 
@@ -80,6 +89,13 @@ const chaptersPerDay = ref(savedSettingsValues.BibleChaptersPerDay)
 onMounted(() => {
   store.loadSettings()
   store.loadReadingPlan()
+
+  // Load daily Bible verse
+  const script = document.createElement('script')
+  script.src = 'https://dailyverses.net/get/verse.js?language=nkjv'
+  script.async = true
+  script.defer = true
+  document.body.appendChild(script)
 })
 
 // const saveSettings = () => {
