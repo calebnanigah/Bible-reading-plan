@@ -87,7 +87,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useStorageStore } from 'src/stores/BibleChapters'
-import { LocalStorage } from 'quasar'
+import { LocalStorage, Notify } from 'quasar'
 
 const store = useStorageStore()
 const dense = ref(false)
@@ -147,5 +147,13 @@ const resetSettings = () => {
   endDate.value = store.settings.readingEndDate
   readingPlan.value = store.settings.readingPlan
   chaptersPerDay.value = store.settings.BibleChaptersPerDay
+
+  Notify.create({
+    message: 'Settings reset to default <br> Reading plan regenerated. 📖 Starting date: Sun. 9th Feb. 2025, 4 chapters a day',
+    color: 'primary',
+    position: 'top',
+    type: 'positive',
+    html: true,
+  })
 }
 </script>
