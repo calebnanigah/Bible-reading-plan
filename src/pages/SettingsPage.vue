@@ -51,6 +51,14 @@
         no-caps
         @click="saveSettings"
       />
+
+      <q-btn
+        class="tw:mx-auto tw:my-4"
+        color="red"
+        label="Reset to default"
+        no-caps
+        @click="resetSettings"
+      />
     </div>
   </form>
 
@@ -129,4 +137,15 @@ onMounted(() => {
 //   store.settings.BibleChaptersPerDay = chaptersPerDay.value
 //   store.generateReadingPlan()
 // })
+
+const resetSettings = () => {
+  LocalStorage.remove('BibleChaptersSettings')
+  LocalStorage.remove('BibleReadingPlan')
+  store.loadSettings()
+  store.loadReadingPlan()
+  startDate.value = store.settings.readingStartDate
+  endDate.value = store.settings.readingEndDate
+  readingPlan.value = store.settings.readingPlan
+  chaptersPerDay.value = store.settings.BibleChaptersPerDay
+}
 </script>
