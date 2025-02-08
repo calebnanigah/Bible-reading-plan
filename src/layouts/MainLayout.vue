@@ -1,102 +1,83 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="lHh Lpr lFf" class="tw:bg-slate-200">
     <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
-
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
+      <q-toolbar class="tw:bg-red-800">
+        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
+        <q-toolbar-title> Bible Reading Plan </q-toolbar-title>
+        <div>4 chapters a day</div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
+    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
-
-        <EssentialLink
+        <q-item-label header> Bible Reading Plan </q-item-label>
+        <q-item
           v-for="link in linksList"
           :key="link.title"
-          v-bind="link"
-        />
+          clickable
+          v-ripple
+          @click="goto(link.to)"
+        >
+          <q-item-section avatar>
+            <q-icon :name="link.icon" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>{{ link.title }}</q-item-label>
+            <q-item-label caption>{{ link.caption }}</q-item-label>
+          </q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <q-page class="tw:sm:w-100 tw:w-full tw:mx-auto">
+        <router-view/>
+
+        <!-- Bottom Navigation -->
+        <div class="tw:sm:hidden tw:block q-gutter-y-md tw:absolute tw:bottom-0 tw:w-full">
+          <q-tabs v-model="tab" class="bg-yellow text-dark shadow-2">
+            <q-tab no-caps="" name="chaptersToday" label="Today" icon="home" @click="goto('chaptersToday')" />
+            <q-tab
+              name="chaptersIndex"
+              label="All Chapters"
+              icon="format_list_bulleted"
+              @click="goto('chaptersIndex')"
+              no-caps=""
+            />
+            <q-tab no-caps="" name="settings" label="Settings" icon="settings" @click="goto('settings')" />
+          </q-tabs>
+        </div>
+      </q-page>
     </q-page-container>
   </q-layout>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+const tab = ref('chaptersToday')
 
 const linksList = [
+  { title: 'Today', caption: 'Chapters to read today', icon: 'home', to: 'chaptersToday' },
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
+    title: 'All Chapters',
+    caption: 'List of all Bible chapters',
+    icon: 'format_list_bulleted',
+    to: 'chaptersIndex',
   },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
+  { title: 'Settings', caption: 'Customize reading settings', icon: 'settings', to: 'settings' },
 ]
 
 const leftDrawerOpen = ref(false)
 
-function toggleLeftDrawer () {
+function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value
+}
+
+function goto(routeName) {
+  tab.value = routeName
+  router.push({ name: routeName })
 }
 </script>
