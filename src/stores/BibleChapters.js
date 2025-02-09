@@ -1,15 +1,17 @@
 import { defineStore } from 'pinia'
 import { LocalStorage, date } from 'quasar'
 
+const DEFAULT_SETTINGS = {
+  BibleChaptersPerDay: 4,
+  readingStartDate: '2025-02-09',
+  readingEndDate: '2025-02-09',
+  readingPlan: 'Chronological',
+  readingProgress: 0,
+}
+
 export const useStorageStore = defineStore('BibleChapters', {
   state: () => ({
-    settings: {
-      BibleChaptersPerDay: 4,
-      readingStartDate: '2025-02-09',
-      readingEndDate: '2025-11-09',
-      readingPlan: 'Chronological',
-      readingProgress: 0,
-    },
+    settings: { ...DEFAULT_SETTINGS },
     booksInTheBible: 66,
     BibleChapters: [
       'Genesis chapter 1',
@@ -1237,6 +1239,20 @@ export const useStorageStore = defineStore('BibleChapters', {
       }
       LocalStorage.set('BibleChaptersSettings', this.settings)
       this.generateReadingPlan()
+    },
+
+    // Restore default settings
+    restoreDefaultSettings() {
+      this.settings = {
+        ...DEFAULT_SETTINGS, // Reset settings to the default values
+        // readingStartDate: date.formatDate(new Date(), 'YYYY-MM-DD'), // Set start date to today
+      }
+
+      // Save the default settings to LocalStorage
+      LocalStorage.set('BibleChaptersSettings', this.settings)
+
+      // Regenerate the reading plan based on the default settings
+      // this.generateReadingPlan()
     },
 
     /**

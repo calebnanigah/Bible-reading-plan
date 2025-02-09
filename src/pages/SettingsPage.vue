@@ -187,7 +187,7 @@ const saveSettings = () => {
 const resetSettings = () => {
   LocalStorage.remove('BibleChaptersSettings')
   LocalStorage.remove('BibleReadingPlan')
-  store.loadSettings()
+  store.restoreDefaultSettings()
   store.loadReadingPlan()
   startDate.value = store.settings.readingStartDate
   endDate.value = store.settings.readingEndDate
