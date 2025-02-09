@@ -14,6 +14,11 @@
         stack-label
         type="number"
         :dense="dense"
+        hint="Enter a number between 1 and 20"
+        :rules="[
+          (val) => !!val || 'This field is required',
+          (val) => (val > 0 && val <= 20) || 'Enter a valid number (1-20)',
+        ]"
       />
 
       <q-input
@@ -23,6 +28,15 @@
         label="Reading start date"
         stack-label
         :dense="dense"
+      />
+
+      <q-input
+        outlined
+        v-model="readingStartChapter"
+        label="Start reading from"
+        stack-label
+        :dense="dense"
+        :disable="true"
       />
 
       <q-input
@@ -99,6 +113,7 @@ const startDate = ref(savedSettingsValues.readingStartDate)
 const endDate = ref(savedSettingsValues.readingEndDate)
 const readingPlan = ref(savedSettingsValues.readingPlan)
 const chaptersPerDay = ref(savedSettingsValues.BibleChaptersPerDay)
+const readingStartChapter = ref('Genesis chapter 1')
 
 onMounted(() => {
   store.loadSettings()
@@ -113,6 +128,17 @@ onMounted(() => {
 })
 
 const saveSettings = () => {
+  if (chaptersPerDay.value < 1 || chaptersPerDay.value > 20) {
+    Notify.create({
+      message: 'Enter a valid number of chapters per day (1-20)',
+      color: 'red',
+      position: 'top',
+      type: 'negative',
+      timeout: 2500,
+    })
+    return
+  }
+
   const newSettings = {
     readingStartDate: startDate.value,
     readingEndDate: endDate.value,
@@ -136,7 +162,9 @@ const saveSettings = () => {
     color: 'primary',
     position: 'top',
     type: 'positive',
+    timeout: 2500,
     html: true,
+    actions: [{ icon: 'close', color: 'white' }],
   })
 
   // LocalStorage.set('BibleChaptersSettings', newSettings) // Save to LocalStorage

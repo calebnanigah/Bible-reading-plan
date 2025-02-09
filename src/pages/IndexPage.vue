@@ -1,6 +1,23 @@
 <template>
+
+    <div
+    class="tw:bg-white tw:rounded-lg tw:shadow-lg tw:m-4 tw:p-2 tw:flex tw:items-center tw:justify-center tw:gap-2"
+  >
+    <q-icon name="info" color="blue-8" size="2rem" />
+    <div>
+      <p class="tw:text-base! tw:m-0! tw:font-semibold!">Bible Reading Plan: {{ store.settings.BibleChaptersPerDay }} chapters a day</p>
+      <q-separator />
+      <p class="tw-text-sm tw:m-0!">Based on your current plan, you are expected to finish reading the Bible on <span class="tw:font-semibold">{{ date.formatDate(store.settings.readingEndDate, 'dddd, Do MMMM YYYY') }}</span></p>
+       <q-separator />
+      <p class="tw-text-sm tw:m-0!">Tap on the WhatsApp button to share with friends.</p>
+    </div>
+  </div>
+
+  <!-- TODO: When the chapter length is more than 5, the chapters should NOT be absolute positioned. They should be in a scrollable div. -->
+   <!-- absolute position the chapters class -->
+   <!-- class="tw:bg-yellow-200 tw:rounded-xl tw:shadow-lg tw:absolute tw:top-1/2 tw:left-1/2 tw:-translate-x-1/2 tw:-translate-y-1/2 tw:w-9/10 tw:text-center -->
   <div
-    class="tw:bg-yellow-200 tw:rounded-xl tw:shadow-lg tw:absolute tw:top-1/2 tw:left-1/2 tw:-translate-x-1/2 tw:-translate-y-1/2 tw:w-9/10 tw:text-center"
+    class="tw:bg-yellow-200 tw:rounded-xl tw:shadow-lg tw:text-center tw:m-4"
   >
     <h6 class="tw:text-2xl tw:bg-blue-600 tw:font-semibold tw:py-2 tw:text-white">
       Today's reading
@@ -17,16 +34,6 @@
     <p class="tw:text-left tw:text-xs tw:font-normal tw:pl-2 tw:text-slate-700">
       {{ formattedDate }}
     </p>
-  </div>
-
-  <div
-    class="tw:bg-white tw:rounded-lg tw:shadow-lg tw:m-4 tw:p-2 tw:flex tw:items-center tw:justify-center tw:gap-2"
-  >
-    <q-icon name="info" color="blue-8" size="2rem" />
-    <div>
-      <p class="tw:text-base! tw:m-0! tw:font-semibold!">Bible Reading Plan: 4 chapters a day</p>
-      <p class="tw-text-sm tw:m-0!">Tap on the WhatsApp button to share with friends.</p>
-    </div>
   </div>
 
   <svg

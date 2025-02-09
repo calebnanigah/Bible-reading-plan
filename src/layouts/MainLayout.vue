@@ -5,7 +5,7 @@
       <q-toolbar class="tw:bg-red-800">
         <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
         <q-toolbar-title> Bible Reading Plan </q-toolbar-title>
-        <div>4 chapters a day</div>
+        <div>{{ store.settings.BibleChaptersPerDay }} chapters a day</div>
       </q-toolbar>
     </q-header>
 
@@ -69,9 +69,12 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useStorageStore } from 'src/stores/BibleChapters'
 
 const router = useRouter()
 const tab = ref('chaptersToday')
+
+const store = useStorageStore()
 
 const linksList = [
   { title: 'Today', caption: 'Chapters to read today', icon: 'home', to: 'chaptersToday' },
