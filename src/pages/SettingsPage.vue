@@ -62,14 +62,14 @@
     </div>
   </form>
 
-  <div
+  <!-- <div
     class="tw:bg-red-200 tw:rounded-lg tw:shadow-lg tw:m-4 tw:p-2 tw:flex tw:items-center tw:justify-center tw:gap-2"
   >
     <q-icon name="info" color="red-8" size="2rem" />
     <div>
       <p class="tw:text-base! tw:m-0!">Settings cannot be saved yet.</p>
     </div>
-  </div>
+  </div> -->
 
   <div class="tw:bg-white tw:rounded-lg tw:shadow-lg tw:m-4 tw:p-2">
     <h2 class="tw:text-base!">📖 Daily Bible Verse (NKJV)</h2>
@@ -79,8 +79,7 @@
   <q-separator />
   <p class="tw:text-sm! tw:font-normal! tw:p-2! tw:text-slate-700 tw:text-center">
     Contact developer:
-    <a href="mailto:calebna4@gmail.com"
-      >calebna4@gmail.com</a>
+    <a href="mailto:calebna4@gmail.com">calebna4@gmail.com</a>
   </p>
 </template>
 
@@ -113,18 +112,37 @@ onMounted(() => {
   document.body.appendChild(script)
 })
 
-// const saveSettings = () => {
-//   const newSettings = {
-//     readingStartDate: startDate.value,
-//     readingEndDate: endDate.value,
-//     readingPlan: readingPlan.value,
-//     BibleChaptersPerDay: chaptersPerDay.value,
-//   }
+const saveSettings = () => {
+  const newSettings = {
+    readingStartDate: startDate.value,
+    readingEndDate: endDate.value,
+    readingPlan: readingPlan.value,
+    BibleChaptersPerDay: parseInt(chaptersPerDay.value),
+    readingProgress: 0,
+  }
 
-//   LocalStorage.set('BibleChaptersSettings', newSettings) // Save to LocalStorage
-//   store.settings = newSettings // Update Pinia store
-//   store.loadReadingPlan() // Regenerate reading plan
-// }
+  // LocalStorage.remove('BibleChaptersSettings')
+  LocalStorage.remove('BibleReadingPlan')
+  store.saveSettings(newSettings)
+  // store.loadSettings()
+  // store.loadReadingPlan()
+  startDate.value = store.settings.readingStartDate
+  endDate.value = store.settings.readingEndDate
+  readingPlan.value = store.settings.readingPlan
+  chaptersPerDay.value = store.settings.BibleChaptersPerDay
+
+  Notify.create({
+    message: `Settings updated. <br> Reading plan regenerated. 📖 <br> Starting date: ${startDate.value}, ${chaptersPerDay.value} chapters a day.`,
+    color: 'primary',
+    position: 'top',
+    type: 'positive',
+    html: true,
+  })
+
+  // LocalStorage.set('BibleChaptersSettings', newSettings) // Save to LocalStorage
+  // store.settings = newSettings // Update Pinia store
+  // store.loadReadingPlan() // Regenerate reading plan
+}
 
 // // Watch for changes to `startDate` & regenerate the plan
 // watch(startDate, () => {
@@ -149,7 +167,8 @@ const resetSettings = () => {
   chaptersPerDay.value = store.settings.BibleChaptersPerDay
 
   Notify.create({
-    message: 'Settings reset to default. <br> Reading plan regenerated. 📖 <br> Starting date: Sun. 9th Feb. 2025, 4 chapters a day.',
+    message:
+      'Settings reset to default. <br> Reading plan regenerated. 📖 <br> Starting date: Sun. 9th Feb. 2025, 4 chapters a day.',
     color: 'primary',
     position: 'top',
     type: 'positive',

@@ -1231,8 +1231,12 @@ export const useStorageStore = defineStore('BibleChapters', {
     /**
      * Save settings to LocalStorage
      */
-    saveSettings() {
+    saveSettings(settings) {
+      if (settings) {
+        this.settings = settings
+      }
       LocalStorage.set('BibleChaptersSettings', this.settings)
+      this.generateReadingPlan()
     },
 
     /**
@@ -1254,6 +1258,13 @@ export const useStorageStore = defineStore('BibleChapters', {
         startDate = date.addToDate(startDate, { days: 1 }) // Move to the next day
       }
 
+      // Update readingEndDate based on the last entry in arrangedChapters
+      if (this.arrangedChapters.length > 0) {
+        this.settings.readingEndDate = this.arrangedChapters[this.arrangedChapters.length - 1].date
+      }
+
+      // Save updated settings and reading plan
+      LocalStorage.set('BibleChaptersSettings', this.settings)
       LocalStorage.set('BibleReadingPlan', this.arrangedChapters)
     },
 
