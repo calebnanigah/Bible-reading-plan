@@ -164,7 +164,7 @@ const saveSettings = () => {
     type: 'positive',
     timeout: 2500,
     html: true,
-    actions: [{ icon: 'close', color: 'white' }],
+    actions: [{ icon: 'close', color: 'red' }],
   })
 
   // LocalStorage.set('BibleChaptersSettings', newSettings) // Save to LocalStorage
@@ -201,6 +201,8 @@ const resetSettings = () => {
     position: 'top',
     type: 'positive',
     html: true,
+     timeout: 2500,
+    actions: [{ icon: 'close', color: 'red' }],
   })
 }
 </script>
