@@ -1,24 +1,28 @@
 <template>
-
-    <div
+  <div
     class="tw:bg-white tw:rounded-lg tw:shadow-lg tw:m-4 tw:p-2 tw:flex tw:items-center tw:justify-center tw:gap-2"
   >
     <q-icon name="info" color="blue-8" size="2rem" />
     <div>
-      <p class="tw:text-base! tw:m-0! tw:font-semibold!">Bible Reading Plan: {{ store.settings.BibleChaptersPerDay }} chapters a day</p>
+      <p class="tw:text-base! tw:m-0! tw:font-semibold!">
+        Bible Reading Plan: {{ store.settings.BibleChaptersPerDay }} chapters a day
+      </p>
       <q-separator />
-      <p class="tw-text-sm tw:m-0!">Based on your current plan, you are expected to finish reading the Bible on <span class="tw:font-semibold">{{ date.formatDate(store.settings.readingEndDate, 'dddd, Do MMMM YYYY') }}</span></p>
-       <q-separator />
+      <p class="tw-text-sm tw:m-0!">
+        Based on your current plan, you are expected to finish reading the Bible on
+        <span class="tw:font-semibold">{{
+          date.formatDate(store.settings.readingEndDate, 'dddd, Do MMMM YYYY')
+        }}</span>
+      </p>
+      <q-separator />
       <p class="tw-text-sm tw:m-0!">Tap on the WhatsApp button to share with friends.</p>
     </div>
   </div>
 
   <!-- TODO: When the chapter length is more than 5, the chapters should NOT be absolute positioned. They should be in a scrollable div. -->
-   <!-- absolute position the chapters class -->
-   <!-- class="tw:bg-yellow-200 tw:rounded-xl tw:shadow-lg tw:absolute tw:top-1/2 tw:left-1/2 tw:-translate-x-1/2 tw:-translate-y-1/2 tw:w-9/10 tw:text-center -->
-  <div
-    class="tw:bg-yellow-200 tw:rounded-xl tw:shadow-lg tw:text-center tw:m-4"
-  >
+  <!-- absolute position the chapters class -->
+  <!-- class="tw:bg-yellow-200 tw:rounded-xl tw:shadow-lg tw:absolute tw:top-1/2 tw:left-1/2 tw:-translate-x-1/2 tw:-translate-y-1/2 tw:w-9/10 tw:text-center -->
+  <div class="tw:bg-yellow-200 tw:rounded-xl tw:shadow-lg tw:text-center tw:m-4">
     <h6 class="tw:text-2xl tw:bg-blue-600 tw:font-semibold tw:py-2 tw:text-white">
       Today's reading
     </h6>
@@ -58,17 +62,41 @@ import { ref, watch, onMounted } from 'vue'
 import { useStorageStore } from 'src/stores/BibleChapters'
 import { date } from 'quasar'
 
-const today = new Date() // Get current date
-const formattedDate = date.formatDate(today, 'dddd, Do MMMM YYYY')
-
 const store = useStorageStore()
 const todayChapters = ref([])
+const formattedDate = ref(getFormattedDate())
+
+// Function to get today's date in formatted form
+function getFormattedDate() {
+  return date.formatDate(new Date(), 'dddd, Do MMMM YYYY')
+}
+
+// Function to update today's chapters
+function updateTodayChapters() {
+  todayChapters.value = store.getChapterForToday()
+  formattedDate.value = getFormattedDate()
+}
+
+// Function to calculate time until midnight and set an update
+function scheduleMidnightUpdate() {
+  const now = new Date()
+  const midnight = new Date(now)
+  midnight.setHours(24, 0, 0, 0) // Set to next midnight
+
+  const timeUntilMidnight = midnight - now // Time in milliseconds
+
+  setTimeout(() => {
+    updateTodayChapters()
+    scheduleMidnightUpdate() // Re-schedule for the next midnight
+  }, timeUntilMidnight)
+}
 
 // Run on load
 onMounted(() => {
   store.loadSettings()
   store.loadReadingPlan()
-  todayChapters.value = store.getChapterForToday()
+  updateTodayChapters()
+  scheduleMidnightUpdate() // Schedule the first update at midnight
 })
 
 // Watch for changes to the start date & regenerate the plan
@@ -76,7 +104,7 @@ watch(
   () => store.settings.readingStartDate,
   () => {
     store.generateReadingPlan()
-    todayChapters.value = store.getChapterForToday()
+    updateTodayChapters()
   },
 )
 
