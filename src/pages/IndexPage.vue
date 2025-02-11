@@ -41,7 +41,7 @@
   </div>
 
   <svg
-    @click="shareOnWhatsApp(formattedDate, todayChapters, store.settings.readingEndDate)"
+    @click="shareOnWhatsApp(formattedDate, todayChapters,  date.formatDate(store.settings.readingEndDate, 'dddd, Do MMMM YYYY'))"
     class="tw:fixed tw:right-2 tw:bottom-20 tw:animate-bounce tw:w-12 tw:h-12"
     xmlns="http://www.w3.org/2000/svg"
     height="32"
