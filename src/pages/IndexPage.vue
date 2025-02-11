@@ -134,7 +134,7 @@ ${formattedChapters}
 Have a blessed day. 🙏🏽❤️
 
 🔗 _Reading Plan: https://biblereadingplan.netlify.app_
-🗓️ _Completion date: ${finishingDate}._`
+🗓️ _*Completion date*: ${finishingDate}._`
 
   let WhatsAppText = `https://api.whatsapp.com/send?text=${encodeURIComponent(msgTxt)}`
 
