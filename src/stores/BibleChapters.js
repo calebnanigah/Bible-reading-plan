@@ -3,8 +3,8 @@ import { LocalStorage, date } from 'quasar'
 
 const DEFAULT_SETTINGS = {
   BibleChaptersPerDay: 4,
-  readingStartDate: '2025-02-09',
-  readingEndDate: '2025-02-09',
+  readingStartDate: '2025-02-09', // TODO:: if the date year is greater than the year 2025, it will be set to the current year: 20XX-01-01
+  readingEndDate: '2025-12-03',
   readingPlan: 'Chronological',
   readingProgress: 0,
 }
